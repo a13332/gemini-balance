@@ -1535,14 +1535,14 @@ function createAndAppendBudgetMapItem(mapKey, mapValue, modelId) {
   valueInput.value = isNaN(intValue) ? 0 : intValue;
   valueInput.placeholder = "预算 (整数)";
   valueInput.className = `${MAP_VALUE_INPUT_CLASS} w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-200 focus:ring-opacity-50`;
-  valueInput.min = 0;
-  valueInput.max = 24576;
+  valueInput.min = -1;
+  valueInput.max = 32768;
   valueInput.addEventListener("input", function () {
     let val = this.value.replace(/[^0-9]/g, "");
     if (val !== "") {
       val = parseInt(val, 10);
-      if (val < 0) val = 0;
-      if (val > 24576) val = 24576;
+      if (val < 0) val = -1;
+      if (val > 32768) val = 32768;
     }
     this.value = val; // Corrected variable name
   });
