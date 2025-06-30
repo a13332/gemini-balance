@@ -2355,7 +2355,7 @@ endblock %} {% block head_extra_styles %}
         let val = this.value.replace(/[^0-9]/g, "");
         if (val !== "") {
           val = parseInt(val, 10);
-          if (val > 24576) val = 24576;
+          if (val > 32768) val = 32768;
         }
         this.value = val;
 
