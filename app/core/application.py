@@ -14,7 +14,6 @@ from app.middleware.middleware import setup_middlewares
 from app.router.routes import setup_routers
 from app.scheduler.scheduled_tasks import start_scheduler, stop_scheduler
 from app.service.key.key_manager import get_key_manager_instance
-from app.service.update.update_service import check_for_updates
 from app.utils.helpers import get_current_version
 
 logger = get_application_logger()
@@ -66,24 +65,6 @@ def _stop_scheduler():
     stop_scheduler()
 
 
-async def _perform_update_check(app: FastAPI):
-    """Checks for updates and stores the info in app.state."""
-    update_available, latest_version, error_message = await check_for_updates()
-    current_version = get_current_version()
-    update_info = {
-        "update_available": update_available,
-        "latest_version": latest_version,
-        "error_message": error_message,
-        "current_version": current_version,
-    }
-    if not hasattr(app, "state"):
-        from starlette.datastructures import State
-
-        app.state = State()
-    app.state.update_info = update_info
-    logger.info(f"Update check completed. Info: {update_info}")
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
@@ -95,7 +76,6 @@ async def lifespan(app: FastAPI):
     logger.info("Application starting up...")
     try:
         await _setup_database_and_config(settings)
-        # await _perform_update_check(app)
         _start_scheduler()
 
     except Exception as e:
@@ -134,7 +114,7 @@ def create_app() -> FastAPI:
     app.state.update_info = {
         "update_available": False,
         "latest_version": None,
-        "error_message": "Initializing...",
+        "error_message": None,
         "current_version": current_version,
     }
 
