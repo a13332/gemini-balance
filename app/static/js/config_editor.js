@@ -1538,8 +1538,9 @@ function createAndAppendBudgetMapItem(mapKey, mapValue, modelId) {
   valueInput.min = -1;
   valueInput.max = 32768;
   valueInput.addEventListener("input", function () {
-    let val = this.value.replace(/[^0-9]/g, "");
-    if (val !== "") {
+    let val = this.value.replace(/[^\d-]/g, ""); 
+    val = val.replace(/(?!^)-/g, "");
+    if (val !== "" && val !== "-") {
       val = parseInt(val, 10);
       if (val < 0) val = -1;
       if (val > 32768) val = 32768;
