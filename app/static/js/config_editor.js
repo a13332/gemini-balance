@@ -1531,22 +1531,23 @@ function createAndAppendBudgetMapItem(mapKey, mapValue, modelId) {
 
   const valueInput = document.createElement("input");
   valueInput.type = "number";
-  const intValue = parseInt(mapValue, 10);
-  valueInput.value = String(isNaN(intValue) ? -1 : Math.min(32768, Math.max(-1, intValue)));
-  valueInput.placeholder = "预算 (整数)";
-  valueInput.className = `${MAP_VALUE_INPUT_CLASS} w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-200 focus:ring-opacity-50`;
   valueInput.min = -1;
   valueInput.max = 32768;
+  valueInput.placeholder = "预算 (整数)";
+  valueInput.className = `${MAP_VALUE_INPUT_CLASS} w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-200 focus:ring-opacity-50`;
+  const intValue = parseInt(mapValue, 10);
+  valueInput.value = String(isNaN(intValue) ? -1 : Math.min(32768, Math.max(-1, intValue)));
+
   valueInput.addEventListener("input", function () {
-    let val = this.value.replace(/[^\d-]/g, ""); 
-    val = val.replace(/(?!^)-/g, "");
-    if (val !== "" && val !== "-") {
-      val = parseInt(val, 10);
-      if (val < 0) val = -1;
-      if (val > 32768) val = 32768;
-    }
-    this.value = val; // Corrected variable name
-  });
+    const num = this.valueAsNumber;
+    if (isNaN(num)) return;
+    if (num < -1) {
+      this.value = -1;
+    } else if (num > 32768) {
+      this.value = 32768;
+      }
+    });
+
 
   // Remove Button - Removed for budget map items
   // const removeBtn = document.createElement('button');
