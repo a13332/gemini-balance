@@ -2352,10 +2352,12 @@ endblock %} {% block head_extra_styles %}
 
       // 输入限制为正整数且不超过最大值
       input.addEventListener("input", function () {
-        let val = this.value.replace(/[^0-9]/g, "");
-        if (val !== "") {
+        let val = this.value.replace(/[^\d-]/g, "");
+        val = val.replace(/(?!^)-/g, "");
+        if (val !== "" && val !== "-") {
           val = parseInt(val, 10);
           if (val > 32768) val = 32768;
+          if (val < 0) val = -1;
         }
         this.value = val;
 
