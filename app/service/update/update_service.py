@@ -5,7 +5,7 @@ from typing import Optional, Tuple
 from app.config.config import settings
 from app.log.logger import get_update_logger
 
-logger = get_update_logger()
+# logger = get_update_logger()
 
 VERSION_FILE_PATH = "VERSION"
 
