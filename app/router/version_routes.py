@@ -6,7 +6,7 @@ from app.service.update.update_service import check_for_updates
 from app.utils.helpers import get_current_version
 from app.log.logger import get_update_logger
 
-router = APIRouter(prefix="/api/version", tags=["Version"])
+# router = APIRouter(prefix="/api/version", tags=["Version"])
 # logger = get_update_logger()
 
 class VersionInfo(BaseModel):
